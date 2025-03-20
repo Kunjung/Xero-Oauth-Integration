@@ -14,6 +14,11 @@ def index(request):
     context = {"title": "Hello World."}
     return render(request, "index.html", context)
 
+def revoke_token(request):
+    request.session.pop('access_token', None)
+    request.session.modified = True
+    return redirect('index')
+
 def authorize(request):
     xero_auth_url = settings.XERO_AUTHORIZATION_URL
     client_id = settings.XERO_CLIENT_ID

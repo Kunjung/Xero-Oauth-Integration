@@ -34,13 +34,16 @@
             <a class="nav-link" href="{% url 'authorize' %}">Authorize</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">View Accounts</a>
+            <a class="nav-link" href="{% url 'account' %}">View Accounts</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">Save Accounts to DB </a>
+            <a class="nav-link" href="{% url 'save' %}">Save Accounts to DB </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">Revoke Token </a>
+            <a class="nav-link" href="{% url 'refresh' %}">Refresh Token</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'revoke' %}">Revoke Token </a>
           </li>
         </ul>
       </div>
