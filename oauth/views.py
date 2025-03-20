@@ -5,6 +5,9 @@ from requests.auth import HTTPBasicAuth
 
 from django.conf import settings
 from django.shortcuts import redirect
+from datetime import datetime
+
+from .models import Account
 
 # Create your views here.
 def index(request):
@@ -72,7 +75,63 @@ def get_xero_data(request):
     response = requests.get('https://api.xero.com/api.xro/2.0/Accounts', headers=headers)
 
     if response.status_code == 200:
-        print(response.text)
+        return JsonResponse(response.json())
+    else:
+        return JsonResponse({"error": response.text}, status=response.status_code)
+    
+def save_xero_data(request):
+    access_token = request.session.get('access_token')
+    if not access_token:
+        return JsonResponse({"error": "Access token missing"}, status=400)
+
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Accept': 'application/json',
+        'Xero-tenant-id': 'd8baa8b5-e3c8-462e-b015-4b53458a4efe',  # Replace with the tenant ID from Xero
+    }
+
+    # Example: Get a list of invoices
+    response = requests.get('https://api.xero.com/api.xro/2.0/Accounts', headers=headers)
+
+    if response.status_code == 200:
+        accounts_info = response.json()["Accounts"]
+        for account_info in accounts_info:
+            # print("account_info: ", account_info)
+            # print("type: ", type(account_info))
+            required_fields = (
+                'AccountID', 'Code', 'Name', 'Status', 'Type', 'TaxType', 'Class', 'EnablePaymentsToAccount',
+                'ShowInExpenseClaims', 'BankAccountNumber', 'BankAccountType', 'CurrencyCode', 'ReportingCode',
+                'ReportingCodeName', 'HasAttachments', 'AddToWatchlist'
+            )
+            for field in required_fields:
+                if field not in account_info:
+                    if field in ('EnablePaymentsToAccount', 'ShowInExpenseClaims', 'HasAttachments', 'AddToWatchlist'):
+                        account_info[field] = False
+                    else:
+                        account_info[field] = ''
+            timestamp = account_info["UpdatedDateUTC"].split('+')[0].split('Date(')[-1]
+            timestamp = int(timestamp) / 1000
+            updated_date = datetime.fromtimestamp(timestamp)
+            account = Account(
+                account_id = account_info["AccountID"],
+                code = account_info["Code"],
+                name = account_info["Name"],
+                status = account_info["Status"],
+                type = account_info["Type"],
+                tax_type = account_info["TaxType"],
+                account_class = account_info["Class"],
+                enable_payments_to_account = account_info["EnablePaymentsToAccount"],
+                show_in_expense_claims = account_info["ShowInExpenseClaims"],
+                bank_account_number = account_info["BankAccountNumber"],
+                bank_account_type = account_info["BankAccountType"],
+                currency_code = account_info["CurrencyCode"],
+                reporting_code = account_info["ReportingCode"],
+                reporting_code_name = account_info["ReportingCodeName"],
+                has_attachments = account_info["HasAttachments"],
+                updated_date = updated_date,  # account_info["UpdatedDateUTC"],
+                add_to_watchlist = account_info["AddToWatchlist"]
+            )
+            account.save()
         return JsonResponse(response.json())
     else:
         return JsonResponse({"error": response.text}, status=response.status_code)
