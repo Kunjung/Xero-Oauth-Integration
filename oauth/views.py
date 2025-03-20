@@ -11,7 +11,8 @@ from .models import Account
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello, world. You're at the oauth index.")
+    context = {"title": "Hello World."}
+    return render(request, "index.html", context)
 
 def authorize(request):
     xero_auth_url = settings.XERO_AUTHORIZATION_URL
