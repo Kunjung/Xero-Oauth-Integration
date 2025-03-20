@@ -61,8 +61,8 @@ def callback(request):
         if refresh_token:
             request.session['refresh_token'] = refresh_token
         
-        print("response_data: ")
-        print(response_data)
+        # print("response_data: ")
+        # print(response_data)
         # return JsonResponse(response_data)
         context = {"data": response_data.items(), "code": code}
         return render(request, "authorize.html", context)
@@ -171,6 +171,8 @@ def refresh_access_token(request):
         response_data = response.json()
         access_token = response_data['access_token']
         request.session['access_token'] = access_token
-        return JsonResponse(response_data)
+        context = {"data": response_data.items()}
+        return render(request, "refresh.html", context)
+        # return JsonResponse(response_data)
     else:
         return JsonResponse({"error": "Failed to refresh token"}, status=400)
