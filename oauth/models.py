@@ -20,3 +20,6 @@ class Account(models.Model):
     has_attachments = models.BooleanField()
     updated_date = models.DateTimeField(default=datetime.now())
     add_to_watchlist = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.code}: {self.name} ({self.type})"
