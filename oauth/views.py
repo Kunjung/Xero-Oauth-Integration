@@ -17,7 +17,7 @@ def index(request):
 def revoke_token(request):
     request.session.pop('access_token', None)
     request.session.modified = True
-    return redirect('index')
+    return render(request, "index.html")
 
 def authorize(request):
     xero_auth_url = settings.XERO_AUTHORIZATION_URL
@@ -61,7 +61,11 @@ def callback(request):
         if refresh_token:
             request.session['refresh_token'] = refresh_token
         
-        return JsonResponse(response_data)
+        print("response_data: ")
+        print(response_data)
+        # return JsonResponse(response_data)
+        context = {"data": response_data.items(), "code": code}
+        return render(request, "authorize.html", context)
     else:
         return JsonResponse({"error": "Failed to get access token"}, status=400)
 
@@ -84,7 +88,8 @@ def get_xero_data(request):
         return JsonResponse(response.json())
     else:
         return JsonResponse({"error": response.text}, status=response.status_code)
-    
+
+
 def save_xero_data(request):
     access_token = request.session.get('access_token')
     if not access_token:
