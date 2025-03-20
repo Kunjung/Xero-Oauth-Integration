@@ -10,6 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+
+# Xero OAuth settings
+XERO_CLIENT_ID = env('XERO_CLIENT_ID')
+XERO_CLIENT_SECRET = env('XERO_CLIENT_SECRET')
+XERO_REDIRECT_URI = env('XERO_REDIRECT_URI')
+XERO_AUTHORIZATION_URL = env('XERO_AUTHORIZATION_URL')
+XERO_TOKEN_URL = env('XERO_TOKEN_URL')
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'oauth',
 ]
 
