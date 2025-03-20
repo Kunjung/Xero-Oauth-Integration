@@ -55,7 +55,7 @@ def callback(request):
         return JsonResponse(response_data)
     else:
         return JsonResponse({"error": "Failed to get access token"}, status=400)
-    
+
 
 def get_xero_data(request):
     access_token = request.session.get('access_token')
@@ -64,13 +64,15 @@ def get_xero_data(request):
 
     headers = {
         'Authorization': f'Bearer {access_token}',
-        'Xero-tenant-id': 'your-tenant-id',  # Replace with the tenant ID from Xero
+        'Accept': 'application/json',
+        'Xero-tenant-id': 'd8baa8b5-e3c8-462e-b015-4b53458a4efe',  # Replace with the tenant ID from Xero
     }
 
     # Example: Get a list of invoices
-    response = requests.get('https://api.xero.com/api.xro/2.0/Invoices', headers=headers)
+    response = requests.get('https://api.xero.com/api.xro/2.0/Accounts', headers=headers)
 
     if response.status_code == 200:
+        print(response.text)
         return JsonResponse(response.json())
     else:
         return JsonResponse({"error": response.text}, status=response.status_code)
