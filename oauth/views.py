@@ -17,7 +17,8 @@ def index(request):
 def revoke_token(request):
     request.session.pop('access_token', None)
     request.session.modified = True
-    return render(request, "index.html")
+    context = {"title": "Revoked access token"}
+    return render(request, "index.html", context)
 
 def authorize(request):
     xero_auth_url = settings.XERO_AUTHORIZATION_URL
