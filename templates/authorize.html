@@ -4,15 +4,33 @@
 
     <h4 class="card-header">Authorized</h4>
     <div class="card-body">
-    <p class="card-text">
+        <p class="card-text">
         
         {% if data %}
-            {% for key, value in data %}
-                <b>{{key}}:</b> <small>{{ value }}</small><br>
-            {% endfor %}
+            <table class="table table-bordered table-striped" style="width: 100%; padding: 10px; table-layout: auto;">
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in data %}
+                        <tr>
+                            <td><b>{{ key }}</b></td>
+                            <td style="padding: 15px; word-wrap: break-word; white-space: normal; word-break: break-word;">
+                                <small>{{ value }}</small>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td><b>Code:</b></td>
+                        <td><small>{{ code }}</small></td>
+                    </tr>
+                </tbody>
+            </table>
         {% endif %}
-        <b>code: </b><small>{{ code }}</small>
-    </p>
+        </p>
     </div>
 
 {% endblock %}
