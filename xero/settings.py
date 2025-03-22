@@ -11,21 +11,22 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 import environ
-
-env = environ.Env()
-environ.Env.read_env()
-
-# Xero OAuth settings
-XERO_CLIENT_ID = env('XERO_CLIENT_ID')
-XERO_CLIENT_SECRET = env('XERO_CLIENT_SECRET')
-XERO_REDIRECT_URI = env('XERO_REDIRECT_URI')
-XERO_AUTHORIZATION_URL = env('XERO_AUTHORIZATION_URL')
-XERO_TOKEN_URL = env('XERO_TOKEN_URL')
+from dotenv import load_dotenv
 
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+dotenv_path = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path)
+
+# Xero OAuth settings
+XERO_CLIENT_ID =os.environ.get('XERO_CLIENT_ID')
+XERO_CLIENT_SECRET =os.environ.get('XERO_CLIENT_SECRET')
+XERO_REDIRECT_URI =os.environ.get('XERO_REDIRECT_URI')
+XERO_AUTHORIZATION_URL =os.environ.get('XERO_AUTHORIZATION_URL')
+XERO_TOKEN_URL =os.environ.get('XERO_TOKEN_URL')
 
 
 # Quick-start development settings - unsuitable for production
