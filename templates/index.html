@@ -3,6 +3,12 @@
 {% block content %}
 
     <h4 class="card-header">{{ title }}</h4>
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+            <p>status code: {{ status_code }}</p>
+            <p>error message: {{ error }}</p>
+        </div>
+    {% endif %}
     <div class="card-body">
         <p class="card-text">
         

@@ -71,7 +71,9 @@ def callback(request):
         context = {"data": response_data.items(), "code": code, "title": "Authorized"}
         return render(request, "index.html", context)
     else:
-        return JsonResponse({"error": "Failed to get access token"}, status=400)
+        # return JsonResponse({"error": "Failed to get access token"}, status=400)
+        context = {"error": "Failed to get access token", "title": "Authorization failed", "status_code": 400}
+        return render(request, "index.html", context)
 
 
 def get_xero_data(request):
@@ -193,4 +195,5 @@ def refresh_access_token(request):
         return render(request, "index.html", context)
         # return JsonResponse(response_data)
     else:
-        return JsonResponse({"error": "Failed to refresh token"}, status=400)
+        context = {"error": "Failed to get refresh token", "title": "Refresh failed", "status_code": 400}
+        return render(request, "index.html", context)
