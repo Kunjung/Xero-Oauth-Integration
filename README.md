@@ -1,5 +1,11 @@
 ## Setup instructions
 
+0. Clone the repo to your local machine
+```
+git clone https://github.com/Kunjung/Xero-Oauth-Integration.git
+cd Xero-Oauth-Integration
+```
+
 1. Add a .env file in the root folder. It should look like this:
 ```
 XERO_CLIENT_ID=your-client-id
