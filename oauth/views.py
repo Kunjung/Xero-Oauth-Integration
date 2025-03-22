@@ -16,6 +16,8 @@ def index(request):
 
 def revoke_token(request):
     request.session.pop('access_token', None)
+    request.session.pop('code', None)
+    request.session.modified = True
     request.session.modified = True
     context = {"title": "Revoked access token"}
     return render(request, "index.html", context)
