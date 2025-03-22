@@ -11,6 +11,12 @@
     {% endif %}
     <br>
     <br>
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+            <p>status code: {{ status_code }}</p>
+            <p>error message: {{ error }}</p>
+        </div>
+    {% endif %}
     <hr>
     <h2>Account Data</h2>
     <table class="table table-bordered table-striped" style="width: 100%; padding: 10px; table-layout: auto;">

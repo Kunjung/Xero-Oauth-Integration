@@ -77,7 +77,8 @@ def callback(request):
 def get_xero_data(request):
     access_token = request.session.get('access_token')
     if not access_token:
-        return JsonResponse({"error": "Access token missing"}, status=400)
+        context = {"error": "Access token missing", "status_code": 400}
+        return render(request, "accounts.html", context)
 
     headers = {
         'Authorization': f'Bearer {access_token}',
@@ -94,7 +95,9 @@ def get_xero_data(request):
         context = {"data": account_data}
         return render(request, "accounts.html", context)
     else:
-        return JsonResponse({"error": response.text}, status=response.status_code)
+        context = {"error": response.text, "status_code": response.status_code}
+        return render(request, "accounts.html", context)
+        # return JsonResponse({"error": response.text}, status=response.status_code)
 
 
 def save_xero_data(request):
