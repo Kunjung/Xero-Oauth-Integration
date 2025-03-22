@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>Account Data</h2>
+    <table class="table table-bordered table-striped" style="width: 100%; padding: 10px; table-layout: auto;">
+        <thead>
+            <tr>
+                <th>S.N.</th>
+                <th>AccountID</th>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>TaxType</th>
+                <th>Class</th>
+                <th>EnablePaymentsToAccount</th>
+                <th>ShowInExpenseClaims</th>
+                <th>BankAccountNumber</th>
+                <th>BankAccountType</th>
+                <th>CurrencyCode</th>
+                <th>ReportingCode</th>
+                <th>ReportingCodeName</th>
+                <th>HasAttachments</th>
+                <th>UpdatedDateUTC</th>
+                <th>AddToWatchlist</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ account.AccountID }}</td>
+                    <td>{{ account.Code }}</td>
+                    <td>{{ account.Name }}</td>
+                    <td>{{ account.Status }}</td>
+                    <td>{{ account.Type }}</td>
+                    <td>{{ account.TaxType }}</td>
+                    <td>{{ account.Class }}</td>
+                    <td>{{ account.EnablePaymentsToAccount }}</td>
+                    <td>{{ account.ShowInExpenseClaims }}</td>
+                    <td>{{ account.BankAccountNumber }}</td>
+                    <td>{{ account.BankAccountType }}</td>
+                    <td>{{ account.CurrencyCode }}</td>
+                    <td>{{ account.ReportingCode }}</td>
+                    <td>{{ account.ReportingCodeName }}</td>
+                    <td>{{ account.HasAttachments }}</td>
+                    <td>{{ account.UpdatedDateUTC }}</td>
+                    <td>{{ account.AddToWatchlist }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

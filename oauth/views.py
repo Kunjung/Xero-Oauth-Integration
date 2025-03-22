@@ -87,7 +87,10 @@ def get_xero_data(request):
     response = requests.get('https://api.xero.com/api.xro/2.0/Accounts', headers=headers)
 
     if response.status_code == 200:
-        return JsonResponse(response.json())
+        # return JsonResponse(response.json())
+        account_data = response.json()['Accounts']
+        context = {"data": account_data}
+        return render(request, "accounts.html", context)
     else:
         return JsonResponse({"error": response.text}, status=response.status_code)
 
