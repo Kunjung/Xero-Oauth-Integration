@@ -113,6 +113,10 @@ def save_xero_data(request):
 
     if response.status_code == 200:
         accounts_info = response.json()["Accounts"]
+        # Delete all account info from local database
+        # This will ensure no duplicates as well as get the latest data only returned from xero api
+        Account.objects.all().delete()
+        print("Previous account data deleted from local db ...")
         for account_info in accounts_info:
             # print("account_info: ", account_info)
             # print("type: ", type(account_info))
