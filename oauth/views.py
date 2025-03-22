@@ -27,8 +27,8 @@ def authorize(request):
     client_id = settings.XERO_CLIENT_ID
     # client_secret = settings.XERO_CLIENT_SECRET
     redirect_uri = settings.XERO_REDIRECT_URI
-    # scope = 'openid profile email accounting.transactions'  # Define the scope you need
-    scope = "files.read profile files accounting.contacts.read payroll.settings accounting.attachments accounting.journals.read accounting.attachments.read projects.read accounting.transactions.read accounting.settings.read payroll.payslip payroll.payruns payroll.employees accounting.transactions assets accounting.contacts accounting.budgets.read offline_access assets.read payroll.timesheets projects openid email accounting.reports.read accounting.settings"
+    scope = 'accounting.transactions.read'  # Define the scope you need
+    # scope = "files.read profile files accounting.contacts.read payroll.settings accounting.attachments accounting.journals.read accounting.attachments.read projects.read accounting.transactions.read accounting.settings.read payroll.payslip payroll.payruns payroll.employees accounting.transactions assets accounting.contacts accounting.budgets.read offline_access assets.read payroll.timesheets projects openid email accounting.reports.read accounting.settings"
     auth_url = f"{xero_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}"
     print("auth_url: ", auth_url)
     return redirect(auth_url)
