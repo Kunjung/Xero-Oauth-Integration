@@ -1,6 +1,6 @@
 ## Setup instructions
 
-1. Go to xero folder and add a .env file. It should look like this:
+1. Add a .env file in the root folder. It should look like this:
 ```
 XERO_CLIENT_ID=your-client-id
 XERO_CLIENT_SECRET=your-client-secret
