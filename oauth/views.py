@@ -150,7 +150,10 @@ def save_xero_data(request):
                 add_to_watchlist = account_info["AddToWatchlist"]
             )
             account.save()
-        return JsonResponse(response.json())
+        # return JsonResponse(response.json())
+        save_to_db = True
+        context = {"save_to_db": save_to_db, "data": accounts_info}
+        return render(request, "accounts.html", context)
     else:
         return JsonResponse({"error": response.text}, status=response.status_code)
 

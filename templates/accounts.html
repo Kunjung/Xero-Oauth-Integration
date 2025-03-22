@@ -2,6 +2,16 @@
 
 {% block content %}
 
+    {% if save_to_db %}
+        <h2>Account Data successfully saved to local database</h2>
+        <p>Previous data has been refreshed with latest data from xero account api</p>
+        <p>You can view the accounts data stored in local database from this link: 
+            <a href="https://localhost:5000/admin/oauth/account/" target="_blank">https://localhost:5000/admin/oauth/account/</a>
+        </p>
+    {% endif %}
+    <br>
+    <br>
+    <hr>
     <h2>Account Data</h2>
     <table class="table table-bordered table-striped" style="width: 100%; padding: 10px; table-layout: auto;">
         <thead>
