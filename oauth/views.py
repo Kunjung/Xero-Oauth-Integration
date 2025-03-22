@@ -11,7 +11,7 @@ from .models import Account
 
 # Create your views here.
 def index(request):
-    context = {"title": "Hello World."}
+    context = {"title": "Hello to Varicon App."}
     return render(request, "index.html", context)
 
 def revoke_token(request):
@@ -33,6 +33,7 @@ def authorize(request):
 def callback(request):
     # Get the authorization code from the request
     code = request.GET.get('code')
+    request.session["code"] = code
 
     # Exchange the authorization code for an access token
     token_url = settings.XERO_TOKEN_URL
@@ -64,8 +65,8 @@ def callback(request):
         # print("response_data: ")
         # print(response_data)
         # return JsonResponse(response_data)
-        context = {"data": response_data.items(), "code": code}
-        return render(request, "authorize.html", context)
+        context = {"data": response_data.items(), "code": code, "title": "Authorized"}
+        return render(request, "index.html", context)
     else:
         return JsonResponse({"error": "Failed to get access token"}, status=400)
 
@@ -157,6 +158,7 @@ def refresh_access_token(request):
     client_id = settings.XERO_CLIENT_ID
     client_secret = settings.XERO_CLIENT_SECRET
     redirect_uri = settings.XERO_REDIRECT_URI
+    code = request.session.get('code')
 
     data = {
         'grant_type': 'refresh_token',
@@ -171,8 +173,8 @@ def refresh_access_token(request):
         response_data = response.json()
         access_token = response_data['access_token']
         request.session['access_token'] = access_token
-        context = {"data": response_data.items()}
-        return render(request, "refresh.html", context)
+        context = {"data": response_data.items(), "title": "Refreshed", "code": code}
+        return render(request, "index.html", context)
         # return JsonResponse(response_data)
     else:
         return JsonResponse({"error": "Failed to refresh token"}, status=400)

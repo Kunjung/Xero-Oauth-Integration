@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h4 class="card-header">Home</h4>
+    <div class="card-body">
+    <p class="card-text">
+        
+        {% if result_list %}
+            {% for message in result_list %}
+                {{ message }}<br>
+            {% endfor %}
+        {% endif %}
+        <pre class="prettyprint"><code class="language-javascript">{{ code }}</code></pre>
+    </p>
+    </div>
+
+{% endblock %}
