@@ -13,6 +13,8 @@ XERO_CLIENT_SECRET=your-client-secret
 XERO_REDIRECT_URI=https://localhost:5000/callback
 XERO_AUTHORIZATION_URL=https://login.xero.com/identity/connect/authorize
 XERO_TOKEN_URL=https://identity.xero.com/connect/token
+XERO_TENANT_ID=your-tenant-id
+XERO_ACCOUNTS_API=https://api.xero.com/api.xro/2.0/Accounts
 ```
 
 2. Go back to the project root and run the following commands to setup virtual environment and install dependencies
