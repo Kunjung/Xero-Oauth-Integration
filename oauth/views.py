@@ -65,13 +65,9 @@ def callback(request):
         if refresh_token:
             request.session['refresh_token'] = refresh_token
         
-        # print("response_data: ")
-        # print(response_data)
-        # return JsonResponse(response_data)
         context = {"data": response_data.items(), "code": code, "title": "Authorized"}
         return render(request, "index.html", context)
     else:
-        # return JsonResponse({"error": "Failed to get access token"}, status=400)
         context = {"error": "Failed to get access token", "title": "Authorization failed", "status_code": 400}
         return render(request, "index.html", context)
 
@@ -88,24 +84,23 @@ def get_xero_data(request):
         'Xero-tenant-id': 'd8baa8b5-e3c8-462e-b015-4b53458a4efe',  # Replace with the tenant ID from Xero
     }
 
-    # Example: Get a list of invoices
+    # Example: Get a list of accounts
     response = requests.get('https://api.xero.com/api.xro/2.0/Accounts', headers=headers)
 
     if response.status_code == 200:
-        # return JsonResponse(response.json())
         account_data = response.json()['Accounts']
         context = {"data": account_data}
         return render(request, "accounts.html", context)
     else:
         context = {"error": response.text, "status_code": response.status_code}
         return render(request, "accounts.html", context)
-        # return JsonResponse({"error": response.text}, status=response.status_code)
 
 
 def save_xero_data(request):
     access_token = request.session.get('access_token')
     if not access_token:
-        return JsonResponse({"error": "Access token missing"}, status=400)
+        context = {"error": "Access token missing", "status_code": 400}
+        return render(request, "accounts.html", context)
 
     headers = {
         'Authorization': f'Bearer {access_token}',
@@ -159,12 +154,12 @@ def save_xero_data(request):
                 add_to_watchlist = account_info["AddToWatchlist"]
             )
             account.save()
-        # return JsonResponse(response.json())
         save_to_db = True
         context = {"save_to_db": save_to_db, "data": accounts_info}
         return render(request, "accounts.html", context)
     else:
-        return JsonResponse({"error": response.text}, status=response.status_code)
+        context = {"error": response.text, "status_code": response.status_code}
+        return render(request, "accounts.html", context)
 
 
 def refresh_access_token(request):
@@ -193,7 +188,6 @@ def refresh_access_token(request):
         request.session['access_token'] = access_token
         context = {"data": response_data.items(), "title": "Refreshed", "code": code}
         return render(request, "index.html", context)
-        # return JsonResponse(response_data)
     else:
         context = {"error": "Failed to get refresh token", "title": "Refresh failed", "status_code": 400}
         return render(request, "index.html", context)
