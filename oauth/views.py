@@ -80,7 +80,7 @@ def get_xero_data(request):
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Accept': 'application/json',
-        'Xero-tenant-id': settings.XERO_TENANT_ID,  # Replace with the tenant ID from Xero
+        'Xero-tenant-id': settings.XERO_TENANT_ID
     }
 
     # Example: Get a list of accounts
@@ -104,7 +104,7 @@ def save_xero_data(request):
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Accept': 'application/json',
-        'Xero-tenant-id': settings.XERO_TENANT_ID,  # Replace with the tenant ID from Xero
+        'Xero-tenant-id': settings.XERO_TENANT_ID
     }
 
     # Example: Get a list of accounts
@@ -112,27 +112,33 @@ def save_xero_data(request):
 
     if response.status_code == 200:
         accounts_info = response.json()["Accounts"]
+        
         # Delete all account info from local database
         # This will ensure no duplicates as well as get the latest data only returned from xero api
         Account.objects.all().delete()
         print("Previous account data deleted from local db ...")
+
         for account_info in accounts_info:
-            # print("account_info: ", account_info)
-            # print("type: ", type(account_info))
             required_fields = (
                 'AccountID', 'Code', 'Name', 'Status', 'Type', 'TaxType', 'Class', 'EnablePaymentsToAccount',
                 'ShowInExpenseClaims', 'BankAccountNumber', 'BankAccountType', 'CurrencyCode', 'ReportingCode',
                 'ReportingCodeName', 'HasAttachments', 'AddToWatchlist'
             )
+
+            # handle case when fields are missing in response json
             for field in required_fields:
                 if field not in account_info:
                     if field in ('EnablePaymentsToAccount', 'ShowInExpenseClaims', 'HasAttachments', 'AddToWatchlist'):
                         account_info[field] = False
                     else:
                         account_info[field] = ''
+            
+            # convert date format supplied to local datetime
             timestamp = account_info["UpdatedDateUTC"].split('+')[0].split('Date(')[-1]
             timestamp = int(timestamp) / 1000
             updated_date = datetime.fromtimestamp(timestamp)
+
+            # use ORM to create new account object and make entry into database
             account = Account(
                 account_id = account_info["AccountID"],
                 code = account_info["Code"],
