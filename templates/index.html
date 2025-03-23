@@ -2,7 +2,11 @@
 
 {% block content %}
 
-    <h4 class="card-header">{{ title }}</h4>
+    {% if title == 'Hello to Xero App.' %}
+        <h4 class="card-header">{{ title }}</h4>
+    {% else %}
+        <h4 class="p-3 mb-2 bg-success text-white">{{ title }}</h4>
+    {% endif %}
     {% if error %}
         <div class="alert alert-danger" role="alert">
             <p>status code: {{ status_code }}</p>
