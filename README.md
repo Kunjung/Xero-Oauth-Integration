@@ -16,7 +16,8 @@ XERO_TOKEN_URL=https://identity.xero.com/connect/token
 XERO_TENANT_ID=your-tenant-id
 XERO_ACCOUNTS_API=https://api.xero.com/api.xro/2.0/Accounts
 ```
-The tenant id can be found here: https://api-explorer.xero.com/accounting/accounts/getaccounts in the auto-generated headers
+The tenant id can be found here: https://api-explorer.xero.com/accounting/accounts/getaccounts in the auto-generated headers.
+
 The client id and client secret are to be setup in the xero developer panel here: https://developer.xero.com/app/manage/
 
 2. Go back to the project root and run the following commands to setup virtual environment and install dependencies
