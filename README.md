@@ -34,11 +34,12 @@ pip install -r requirements.txt
 openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
 ```
 
-4. Now run the following commmands to migrate the necessary tables
+4. Now run the following commmands to migrate the necessary tables and also create a superuser admin to view the accounts data from admin dashboard.
 
 ```
 python manage.py makemigrations
 python manage.py migrate
+python manage.py createsuperuser
 ```
 
 5. Start the server with port 5000 and enable https using the following command
