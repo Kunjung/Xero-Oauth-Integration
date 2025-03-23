@@ -11,7 +11,7 @@ from .models import Account
 
 # Create your views here.
 def index(request):
-    context = {"title": "Hello to Varicon App."}
+    context = {"title": "Hello to Xero App."}
     return render(request, "index.html", context)
 
 def revoke_token(request):
@@ -25,7 +25,6 @@ def revoke_token(request):
 def authorize(request):
     xero_auth_url = settings.XERO_AUTHORIZATION_URL
     client_id = settings.XERO_CLIENT_ID
-    # client_secret = settings.XERO_CLIENT_SECRET
     redirect_uri = settings.XERO_REDIRECT_URI
     scope = 'accounting.transactions.read'  # Define the scope you need
     # scope = "files.read profile files accounting.contacts.read payroll.settings accounting.attachments accounting.journals.read accounting.attachments.read projects.read accounting.transactions.read accounting.settings.read payroll.payslip payroll.payruns payroll.employees accounting.transactions assets accounting.contacts accounting.budgets.read offline_access assets.read payroll.timesheets projects openid email accounting.reports.read accounting.settings"
@@ -81,11 +80,11 @@ def get_xero_data(request):
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Accept': 'application/json',
-        'Xero-tenant-id': 'd8baa8b5-e3c8-462e-b015-4b53458a4efe',  # Replace with the tenant ID from Xero
+        'Xero-tenant-id': settings.XERO_TENANT_ID,  # Replace with the tenant ID from Xero
     }
 
     # Example: Get a list of accounts
-    response = requests.get('https://api.xero.com/api.xro/2.0/Accounts', headers=headers)
+    response = requests.get(settings.XERO_ACCOUNTS_API, headers=headers)
 
     if response.status_code == 200:
         account_data = response.json()['Accounts']
@@ -105,11 +104,11 @@ def save_xero_data(request):
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Accept': 'application/json',
-        'Xero-tenant-id': 'd8baa8b5-e3c8-462e-b015-4b53458a4efe',  # Replace with the tenant ID from Xero
+        'Xero-tenant-id': settings.XERO_TENANT_ID,  # Replace with the tenant ID from Xero
     }
 
-    # Example: Get a list of invoices
-    response = requests.get('https://api.xero.com/api.xro/2.0/Accounts', headers=headers)
+    # Example: Get a list of accounts
+    response = requests.get(settings.XERO_ACCOUNTS_API, headers=headers)
 
     if response.status_code == 200:
         accounts_info = response.json()["Accounts"]
@@ -170,7 +169,6 @@ def refresh_access_token(request):
     token_url = settings.XERO_TOKEN_URL
     client_id = settings.XERO_CLIENT_ID
     client_secret = settings.XERO_CLIENT_SECRET
-    redirect_uri = settings.XERO_REDIRECT_URI
     code = request.session.get('code')
 
     data = {

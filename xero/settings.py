@@ -22,12 +22,13 @@ dotenv_path = os.path.join(BASE_DIR, '.env')
 load_dotenv(dotenv_path)
 
 # Xero OAuth settings
-XERO_CLIENT_ID =os.environ.get('XERO_CLIENT_ID')
-XERO_CLIENT_SECRET =os.environ.get('XERO_CLIENT_SECRET')
-XERO_REDIRECT_URI =os.environ.get('XERO_REDIRECT_URI')
-XERO_AUTHORIZATION_URL =os.environ.get('XERO_AUTHORIZATION_URL')
-XERO_TOKEN_URL =os.environ.get('XERO_TOKEN_URL')
-
+XERO_CLIENT_ID = os.environ.get('XERO_CLIENT_ID')
+XERO_CLIENT_SECRET = os.environ.get('XERO_CLIENT_SECRET')
+XERO_REDIRECT_URI = os.environ.get('XERO_REDIRECT_URI')
+XERO_AUTHORIZATION_URL = os.environ.get('XERO_AUTHORIZATION_URL')
+XERO_TOKEN_URL = os.environ.get('XERO_TOKEN_URL')
+XERO_TENANT_ID = os.environ.get('XERO_TENANT_ID')
+XERO_ACCOUNTS_API = os.environ.get('XERO_ACCOUNTS_API')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
