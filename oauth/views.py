@@ -15,6 +15,7 @@ def index(request):
     return render(request, "index.html", context)
 
 def revoke_token(request):
+    # Revoke token by deleting the access_token stored in session
     request.session.pop('access_token', None)
     request.session.pop('code', None)
     request.session.modified = True
@@ -22,14 +23,12 @@ def revoke_token(request):
     context = {"title": "Revoked access token"}
     return render(request, "index.html", context)
 
-def authorize(request):
+def authorize_in_xero(request):
     xero_auth_url = settings.XERO_AUTHORIZATION_URL
     client_id = settings.XERO_CLIENT_ID
     redirect_uri = settings.XERO_REDIRECT_URI
-    scope = 'accounting.transactions.read'  # Define the scope you need
-    # scope = "files.read profile files accounting.contacts.read payroll.settings accounting.attachments accounting.journals.read accounting.attachments.read projects.read accounting.transactions.read accounting.settings.read payroll.payslip payroll.payruns payroll.employees accounting.transactions assets accounting.contacts accounting.budgets.read offline_access assets.read payroll.timesheets projects openid email accounting.reports.read accounting.settings"
+    scope = 'accounting.transactions.read'
     auth_url = f"{xero_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}"
-    print("auth_url: ", auth_url)
     return redirect(auth_url)
 
 def callback(request):
@@ -55,11 +54,10 @@ def callback(request):
     response_data = response.json()
 
     if response.status_code == 200:
-        # Save the token data to session or database
         access_token = response_data['access_token']
         refresh_token = response_data.get('refresh_token', None)
         
-        # You can store these tokens in the session or database
+        # Save access_token and refresh_token in session
         request.session['access_token'] = access_token
         if refresh_token:
             request.session['refresh_token'] = refresh_token
@@ -71,7 +69,7 @@ def callback(request):
         return render(request, "index.html", context)
 
 
-def get_xero_data(request):
+def get_account_data_from_xero(request):
     access_token = request.session.get('access_token')
     if not access_token:
         context = {"error": "Access token missing", "status_code": 400}
@@ -83,7 +81,7 @@ def get_xero_data(request):
         'Xero-tenant-id': settings.XERO_TENANT_ID
     }
 
-    # Example: Get a list of accounts
+    # Call the accounts api to get the accounts data from Xero
     response = requests.get(settings.XERO_ACCOUNTS_API, headers=headers)
 
     if response.status_code == 200:
@@ -95,7 +93,7 @@ def get_xero_data(request):
         return render(request, "accounts.html", context)
 
 
-def save_xero_data(request):
+def save_account_data_to_local_db(request):
     access_token = request.session.get('access_token')
     if not access_token:
         context = {"error": "Access token missing", "status_code": 400}
@@ -107,7 +105,7 @@ def save_xero_data(request):
         'Xero-tenant-id': settings.XERO_TENANT_ID
     }
 
-    # Example: Get a list of accounts
+    # Call the accounts api to get the accounts data from Xero
     response = requests.get(settings.XERO_ACCOUNTS_API, headers=headers)
 
     if response.status_code == 200:
