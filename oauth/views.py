@@ -164,7 +164,8 @@ def save_xero_data(request):
 def refresh_access_token(request):
     refresh_token = request.session.get('refresh_token')
     if not refresh_token:
-        return JsonResponse({"error": "Refresh token missing"}, status=400)
+        context = {"error": "Refresh token missing", "title": "Refresh failed", "status_code": 400}
+        return render(request, "index.html", context)
 
     token_url = settings.XERO_TOKEN_URL
     client_id = settings.XERO_CLIENT_ID
