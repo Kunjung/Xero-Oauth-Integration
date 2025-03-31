@@ -19,7 +19,6 @@ def revoke_token(request):
     request.session.pop('access_token', None)
     request.session.pop('code', None)
     request.session.modified = True
-    request.session.modified = True
     context = {"title": "Revoked access token"}
     return render(request, "index.html", context)
 
@@ -132,8 +131,10 @@ def save_account_data_to_local_db(request):
                         account_info[field] = ''
             
             # convert date format supplied to local datetime
+            # timestamp in xero is in the format: Date(1742386334570+0000)
+            # extract the part '1742386334570' which is the timestamp in milliseconds
             timestamp = account_info["UpdatedDateUTC"].split('+')[0].split('Date(')[-1]
-            timestamp = int(timestamp) / 1000
+            timestamp = int(timestamp) / 1000  # convert milliseconds to seconds before converting to datetime
             updated_date = datetime.fromtimestamp(timestamp)
 
             # use ORM to create new account object and make entry into database
